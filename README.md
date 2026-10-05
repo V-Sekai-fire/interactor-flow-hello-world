@@ -1,22 +1,19 @@
-# FLOW_hello_world
+# interactor-flow-hello-world
 
-1. https://rancherdesktop.io/
-1. Install kubernetes with nerd.
-1. Execute commands
+A hello-world webhook event source and a sensor that starts a container workflow when the webhook receives a POST.
 
+## What it is for
+
+It is the smallest event-driven workflow on a local cluster: a request to the webhook becomes an event, and the sensor turns the event into a workflow run. Both manifests use the `argoproj.io/v1alpha1` API, so the cluster needs the workflow and events controllers that serve it.
+
+## Run
+
+```sh
+kubectl apply -f event_source_hello.yaml
 ```
-kubectl create ns argo
-kubectl apply -n argo -f https://raw.githubusercontent.com/argoproj/argo-workflows/stable/manifests/quick-start-postgres.yaml
-kubectl -n argo port-forward deployment/argo-server 2746:2746
-scoop install argo kube
-kubectl get pods -n argocd
-argo submit -n argo --watch https://raw.githubusercontent.com/argoproj/argo-workflows/stable/examples/hello-world.yaml
-kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-events/stable/manifests/install-validating-webhook.yaml
-kubectl create ns argo-events
-kubectl apply -n argo-events -f https://raw.githubusercontent.com/argoproj/argo-events/stable/examples/event-sources/webhook.yaml
-kubectl apply -n argo-events -f https://raw.githubusercontent.com/argoproj/argo-events/stable/examples/sensors/webhook.yaml
-kubectl -n argo port-forward deployment/argo-server 12000:12000
-kubectl -n argo-events edit service webhook-eventsource-svc # change to nodeport
-kubectl -n argo-events port-forward service/webhook-eventsource-svc 12000:12000
-curl localhost:12000/hello
-```
+
+The sensor manifest holds the sensor's metadata and spec without its `apiVersion` and `kind`, so it needs those two fields before it applies.
+
+## Licence
+
+MIT; see `LICENSE`.
