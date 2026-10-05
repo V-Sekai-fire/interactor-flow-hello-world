@@ -2,6 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: EventSource
 metadata:
   name: webhook
+  namespace: argo
 spec:
   service:
     ports:
@@ -9,7 +10,7 @@ spec:
         targetPort: 12000
   webhook:
     # event-source can run multiple HTTP servers. Simply define a unique port to start a new HTTP server
-    example:
+    hello:
       # port to run HTTP server on
       port: "12000"
       # endpoint to listen to
